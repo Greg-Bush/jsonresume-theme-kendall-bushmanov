@@ -49,6 +49,16 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+// utils.js или прямо в модуле
+function hasNonEmptyItem(array, field = null) {
+    return Array.isArray(array) && array.length > 0 && (
+        field === null
+            ? true
+            : array.some(item => item && item[field] != null && item[field] !== '')
+    );
+}
+
+
 function render(resumeObject) {
 
     resumeObject.basics.capitalName = _.upperCase(resumeObject.basics.name);
@@ -161,26 +171,26 @@ function render(resumeObject) {
         }
     }
 
-    if (resumeObject.work && resumeObject.work.length) {
+
+    // Work
+    if (hasNonEmptyItem(resumeObject.work)) {
         resumeObject.workBool = true;
         _.each(resumeObject.work, handleWorkplace);
     }
 
-    if (resumeObject.volunteer && resumeObject.volunteer.length) {
+    // Volunteer
+    if (hasNonEmptyItem(resumeObject.volunteer)) {
         resumeObject.volunteerBool = true;
         _.each(resumeObject.volunteer, handleWorkplace);
     }
 
-    if (resumeObject.projects && resumeObject.projects.length) {
-        if (resumeObject.projects[0].name) {
-            resumeObject.projectsBool = true;
-        }
-    }
+    // Projects
+    resumeObject.projectsBool = hasNonEmptyItem(resumeObject.projects, 'name');
 
-    if (resumeObject.education && resumeObject.education.length) {
-        if (resumeObject.education[0].institution) {
-            resumeObject.educationBool = true;
-            _.each(resumeObject.education, function(e){
+    // Education
+    if (hasNonEmptyItem(resumeObject.education, 'institution')) {
+        resumeObject.educationBool = true;
+        _.each(resumeObject.education, function(e){
                 handleWorkplace(e);
                 if( !e.area || !e.studyType ){
                   e.educationDetail = (e.area == null ? '' : e.area) + (e.studyType == null ? '' : e.studyType);
@@ -204,72 +214,47 @@ function render(resumeObject) {
                     e.endDateYear = 'Present'
                     e.endDateMonth = '';
                 }
-                if (e.courses) {
-                    if (e.courses[0]) {
-                        if (e.courses[0] != "") {
-                            e.educationCourses = true;
-                        }
-                    }
-                }
-            });
-        }
+                e.educationCourses = hasNonEmptyItem(e.courses);
+        });
     }
 
-    if (resumeObject.awards && resumeObject.awards.length) {
-        if (resumeObject.awards[0].title) {
-            resumeObject.awardsBool = true;
-            _.each(resumeObject.awards, function(a){
+    // Awards
+    if (hasNonEmptyItem(resumeObject.awards, 'title')) {
+        resumeObject.awardsBool = true;
+        _.each(resumeObject.awards, function(a){
                 a.year = (a.date || "").substr(0,4);
                 a.day = (a.date || "").substr(8,2);
                 a.month = getMonth(a.date || "");
             });
-        }
     }
 
-    if (resumeObject.publications && resumeObject.publications.length) {
-        if (resumeObject.publications[0].name) {
-            resumeObject.publicationsBool = true;
-            _.each(resumeObject.publications, function(a){
+    // Publications
+    if (hasNonEmptyItem(resumeObject.publications, 'name')) {
+        resumeObject.publicationsBool = true;
+        _.each(resumeObject.publications, function(a){
                 a.year = (a.releaseDate || "").substr(0,4);
                 a.day = (a.releaseDate || "").substr(8,2);
                 a.month = getMonth(a.releaseDate || "");
             });
-        }
     }
 
-    if (resumeObject.skills && resumeObject.skills.length) {
-        if (resumeObject.skills[0].name) {
-            resumeObject.skillsBool = true;
-        }
-    }
+    // Skills, Interests, Languages, References — только проверка наличия
+    resumeObject.skillsBool = hasNonEmptyItem(resumeObject.skills, 'name');
+    resumeObject.interestsBool = hasNonEmptyItem(resumeObject.interests, 'name');
+    resumeObject.languagesBool = hasNonEmptyItem(resumeObject.languages, 'language');
+    resumeObject.referencesBool = hasNonEmptyItem(resumeObject.references, 'name');
 
-    if (resumeObject.interests && resumeObject.interests.length) {
-        if (resumeObject.interests[0].name) {
-            resumeObject.interestsBool = true;
-        }
-    }
-
-    if (resumeObject.languages && resumeObject.languages.length) {
-        if (resumeObject.languages[0].language) {
-            resumeObject.languagesBool = true;
-        }
-    }
-
-    if (resumeObject.references && resumeObject.references.length) {
-        if (resumeObject.references[0].name) {
-            resumeObject.referencesBool = true;
-        }
-    }
-
+    // === CSS & шаблон ===
     resumeObject.css = fs.readFileSync(__dirname + "/style.css", "utf-8");
     resumeObject.printcss = fs.readFileSync(__dirname + "/print.css", "utf-8");
     resumeObject.pdfcss = fs.readFileSync(__dirname + "/pdf.css", "utf-8");
-    var theme = fs.readFileSync(__dirname + '/resume.template.html', 'utf8');
-    var resumeHTML = Mustache.render(theme, resumeObject);
 
+    const theme = fs.readFileSync(__dirname + '/resume.template.html', 'utf8');
+    
+    const resumeHTML = Mustache.render(theme, resumeObject);
 
     return resumeHTML;
-};
+}
 module.exports = {
     render: render
 }

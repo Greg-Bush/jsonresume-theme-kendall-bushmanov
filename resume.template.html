@@ -15,9 +15,6 @@
     {{{css}}}
     </style>
     <style type="text/css" media="print">
-    {{{printcss}}}
-    </style>
-    <style type="text/css">
     {{{pdfcss}}}
     </style>
     <!-- FAVICON -->
@@ -115,7 +112,7 @@
               <li class="list-group-item">
                 <span style="font-weight:bold">{{name}}</span>: {{description}}
                 <div class="address">
-                  <a href="{{url}}" target="_blank">{{url}}</a>
+                  <a href="{{url}}" target="_blank">{{#url}}<i class="fas fa-globe ico"></i> {{/url}}{{url}}</a>
                 </div>
               </li>
               {{/projects}}
