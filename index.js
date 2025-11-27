@@ -70,6 +70,7 @@ function render(resumeObject) {
                     });
     }
     if (resumeObject.basics.image || resumeObject.basics.gravatar) {
+        resumeObject.photoBool = true;
         resumeObject.photo = resumeObject.basics.image ? resumeObject.basics.image : resumeObject.basics.gravatar;
         resumeObject.photoType = getMimeType(resumeObject.photo) ;
     }
@@ -245,6 +246,10 @@ function render(resumeObject) {
     resumeObject.referencesBool = hasNonEmptyItem(resumeObject.references, 'name');
 
     // === CSS & шаблон ===
+    resumeObject.bootstrap = fs.readFileSync(__dirname + "/bootstrap.min.css", "utf-8");
+    resumeObject.fontawesome = fs.readFileSync(__dirname + "/fontawesome.min.css", "utf-8");
+    resumeObject.normalize = fs.readFileSync(__dirname + "/normalize.css", "utf-8");
+
     resumeObject.css = fs.readFileSync(__dirname + "/style.css", "utf-8");
     resumeObject.printcss = fs.readFileSync(__dirname + "/print.css", "utf-8");
     resumeObject.pdfcss = fs.readFileSync(__dirname + "/pdf.css", "utf-8");
