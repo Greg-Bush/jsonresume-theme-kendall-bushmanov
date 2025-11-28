@@ -187,7 +187,7 @@ th {
   padding:0
 }
 /*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */@media print {
-  *,
+  /* *,
   :after,
   :before {
     color:#000!important;
@@ -195,7 +195,7 @@ th {
     background:0 0!important;
     -webkit-box-shadow:none!important;
     box-shadow:none!important
-  }
+  } */
   a,
   a:visited {
     text-decoration:underline
@@ -213,6 +213,7 @@ th {
   blockquote,
   pre {
     border:1px solid #999;
+    break-inside:avoid;
     page-break-inside:avoid
   }
   thead {
@@ -220,6 +221,7 @@ th {
   }
   img,
   tr {
+    break-inside:avoid;
     page-break-inside:avoid
   }
   img {
@@ -233,6 +235,7 @@ th {
   }
   h2,
   h3 {
+    break-after:avoid;
     page-break-after:avoid
   }
   .navbar {

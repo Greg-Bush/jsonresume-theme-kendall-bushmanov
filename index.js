@@ -63,6 +63,7 @@ function render(resumeObject) {
 
     resumeObject.basics.capitalName = _.upperCase(resumeObject.basics.name);
     if(resumeObject.basics && resumeObject.basics.email) {
+        // TODO: check gravatar
         resumeObject.basics.gravatar = 'https:' + gravatar.url(resumeObject.basics.email, {
                         s: '200',
                         r: 'pg',
@@ -250,9 +251,8 @@ function render(resumeObject) {
     resumeObject.fontawesome = fs.readFileSync(__dirname + "/fontawesome.min.css", "utf-8");
     resumeObject.normalize = fs.readFileSync(__dirname + "/normalize.css", "utf-8");
 
-    resumeObject.css = fs.readFileSync(__dirname + "/style.css", "utf-8");
+    resumeObject.stylecss = fs.readFileSync(__dirname + "/style.css", "utf-8");
     resumeObject.printcss = fs.readFileSync(__dirname + "/print.css", "utf-8");
-    resumeObject.pdfcss = fs.readFileSync(__dirname + "/pdf.css", "utf-8");
 
     const theme = fs.readFileSync(__dirname + '/resume.template.html', 'utf8');
     

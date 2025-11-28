@@ -11,10 +11,9 @@
   <style type="text/css">{{{fontawesome}}}</style>
   <style type="text/css">{{{normalize}}}</style>
   <style type="text/css">
-    {{{css}}}
+    {{{stylecss}}}
   </style>
   <style type="text/css" media="print">
-    {{{pdfcss}}}
     {{{printcss}}}
   </style>
   <!-- FAVICON -->
@@ -49,12 +48,12 @@
       </div>
       {{/basics.summary}}
       <!-- CONTACT -->
-      <div class="box col-xs-12 col-sm-5 clearfix">
+      <div class="box col-xs-12 col-sm-5">
         <h2><i class="fas fa-bullseye ico"></i> Contact</h2>
         {{#basics.location}}
         <div class="contact-item">
           <div class="icon pull-left text-center"><span class="fas fa-map-marker fa-fw"></span></div>
-          {{#basics.location.address}}<div class="title pull-right">{{basics.location.address}}</div>{{/basics.location.address}}
+          {{#basics.location.address}}<div class="title {{^basics.location.city}}only {{/basics.location.city}} pull-right">{{basics.location.address}}</div>{{/basics.location.address}}
           <div class="title {{^basics.location.address}}only {{/basics.location.address}} pull-right">{{basics.location.city}}{{#basics.location.region}}, {{basics.location.region}}{{/basics.location.region}}{{#basics.location.postalCode}} {{basics.location.postalCode}}{{/basics.location.postalCode}}{{#basics.location.countryCode}} {{basics.location.countryCode}}{{/basics.location.countryCode}}</div>
         </div>
         {{/basics.location}}

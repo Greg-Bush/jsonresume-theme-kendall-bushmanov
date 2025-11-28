@@ -22,6 +22,12 @@ blockquote {
   background: #fff;
 }
 
+@media (min-width: 768px) {
+  .col-sm-5 {
+    float: right;
+  }
+}
+
 .list-group{
   margin-bottom: 0;
 }
