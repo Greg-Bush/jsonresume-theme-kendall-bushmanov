@@ -68,14 +68,14 @@ blockquote,
   margin: 0;
 }
 
-/* TODO: */
-
-#awards .year{
+/* #awards .year{
   width: 25%;
 }
 #awards .description{
   width: 75%;
-}
+} */
+
+/* TODO: */
 
 .publication,
 .publication .panel-heading,
