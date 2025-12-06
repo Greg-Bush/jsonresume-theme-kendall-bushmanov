@@ -20,16 +20,12 @@ a[href]:after {
   padding-bottom: 15px;
 }
 
-@page :first {
-  padding-top: 0px;
-}
-
 #photo{
   display: none;
 }
 
 #photo-header{
-  margin-top: 15px;
+  margin-top: 0;
 }
 
 .box {
@@ -37,8 +33,8 @@ a[href]:after {
 }
 
 blockquote,
-#education,
-#awards,
+.box:has(> #awards),
+.year,
 .contact-item,
 .publication,
 .skills,

@@ -261,5 +261,13 @@ function render(resumeObject) {
     return resumeHTML;
 }
 module.exports = {
-    render: render
+    render: render,
+    pdfRenderOptions: {
+        mediaType: 'print',
+        format: 'A4',
+        margin: {
+            top: 15,
+            bottom: 15
+        }
+    }
 }
