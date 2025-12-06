@@ -200,6 +200,7 @@ blockquote {
 .job .skills,
 #education .skills {
   margin: 10px 0;
+  margin-bottom: 5px;
 }
 .job .highlights{
   margin: 5px 0;
@@ -208,6 +209,15 @@ blockquote {
 .job .job-details {
   padding-left: 5%;
   width: 100%;
+}
+#courses li {
+  width: auto;
+  margin-right: 5px;
+  margin-top: 5px;
+  border-radius: 20px;
+}
+.description:has(> #courses) {
+  padding-right: 5px;
 }
 .publication {
   margin-bottom: 0;
@@ -270,7 +280,7 @@ blockquote {
   color: #fff;
   display: inline-block;
   margin-right: 5px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   padding: 5px 10px;
   background: #32475c;
   position: relative;

@@ -47,15 +47,6 @@ blockquote,
   page-break-inside: avoid;
 }
 
-/* @media print {
-    .page-break-avoid,
-    .job,
-    .list-group {
-        break-inside: avoid;
-        page-break-inside: avoid;
-    }
-} */
-
 .col-sm-5{
   width: 100%;
 }
@@ -68,51 +59,11 @@ blockquote,
   margin: 0;
 }
 
-/* #awards .year{
-  width: 25%;
-}
-#awards .description{
-  width: 75%;
-} */
-
-/* TODO: */
-
-.publication,
-.publication .panel-heading,
-.publication .name{
-  margin: 0;
-  padding: 0 5px;
-  border: none;
-}
-.publication .panel-body {
-  padding: 0 10px;
-  margin: 0;
-}
-
-.badge {
-  margin: 0;
-}
-
-.list-group-item{
-  border: none;
-  margin: 0;
-  padding: 5px 15px;
-}
-.list-group-item:after{
-  content: '';
-  position: absolute;
-  top: 8px;
-  right: 0;
-  left: -1px;
-  height: 0;
-  width: 0;
-  border: solid transparent;
-  border-right-color: #999;
-  border-width: 4px;
-  pointer-events: none;
- }
-
 .address {
   white-space: normal;
   word-break: break-all;
+}
+
+.skills > .col-sm-offset-1 {
+  margin-left: 0;
 }
