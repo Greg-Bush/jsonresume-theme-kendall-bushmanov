@@ -11,6 +11,7 @@
   "author": "Grigorii Bushmanov",
   "license": "MIT",
   "dependencies": {
+    "@kurone-kito/jsonresume-types": "^0.4.0",
     "@types/node": "^24.10.2",
     "check-url-type": "^1.0.1",
     "date-fns": "^2.30.0",

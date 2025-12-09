@@ -9,6 +9,7 @@ var endOfMonth = require('date-fns/endOfMonth');
 var addDays = require('date-fns/addDays');
 const xmlhttprequest = require("xmlhttprequest");
 const checkUrlType = require('check-url-type');
+import type { ResumeSchema } from '@kurone-kito/jsonresume-types';
 
 
 function getNetworkIconClass(network: string) {
@@ -152,7 +153,7 @@ class SplittedDateRangeMixin {
 
 class ExperienceMixin {
     experience?: string
-    mix(startDate: string, endDate?: string) {
+    mix(startDate?: string, endDate?: string) {
         if (startDate) {
             const months = differenceInMonths(
                 addDays(endOfMonth(endDate ? new Date(endDate) : new Date()), 1),
@@ -171,7 +172,7 @@ class ExperienceMixin {
     }
 }
 
-function handleWorkplace(w: any) {
+function handleWorkplace(w: Required<ResumeSchema>['work']['0']) {
     const { startDate, endDate } = w;
     SplittedDateRangeMixin.prototype.mix.call(w, startDate, endDate);
     handleStringArrayExistance(w, 'highlights');
@@ -179,7 +180,7 @@ function handleWorkplace(w: any) {
     ExperienceMixin.prototype.mix.call(w, startDate, endDate);
 }
 
-function handleEducation(e: any) {
+function handleEducation(e: Required<ResumeSchema>['education']['0']) {
     const { startDate, endDate } = e;
     SplittedDateRangeMixin.prototype.mix.call(e, startDate, endDate);
     handleStringArrayExistance(e, 'keywords');
@@ -191,7 +192,7 @@ function handleEducation(e: any) {
     }
 }
 
-function handleGravatar(basics: any) {
+function handleGravatar(basics: ResumeSchema['basics']) {
     if (!basics?.email) {
         return;
     }
@@ -221,11 +222,11 @@ function importFile(name: string) {
 function render(resumeObject: any) {
     const { basics } = resumeObject;
 
-    basics.capitalName = _.upperCase(basics.name);
+    if(basics?.name) basics.capitalName = _.upperCase(basics.name);
 
     handleImage(resumeObject);
 
-    _.each(basics.profiles, function (p: any) {
+    _.each(basics?.profiles, function (p: any) {
         if (!p.iconClass) {
             p.iconClass = getNetworkIconClass(p.network);
         }
