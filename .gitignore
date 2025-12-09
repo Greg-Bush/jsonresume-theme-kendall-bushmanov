@@ -2,3 +2,7 @@ node_modules
 npm-debug.log
 resume.json
 public
+index.d.ts
+index.d.ts.map
+index.js
+index.js.map

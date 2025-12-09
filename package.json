@@ -2,18 +2,22 @@
   "name": "jsonresume-theme-kendall-bushmanov",
   "version": "0.2.7",
   "description": "A JSON Resume theme built with bootstrap",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
+    "build": "tsc",
+    "postinstall": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Grigorii Bushmanov",
   "license": "MIT",
   "dependencies": {
+    "@types/node": "^24.10.2",
     "check-url-type": "^1.0.1",
     "date-fns": "^2.30.0",
     "gravatar": "^1.8.2",
     "lodash": "^4.17.20",
     "mustache": "^2.2.1",
+    "typescript": "^5.4.5",
     "xmlhttprequest": "^1.8.0"
   },
   "repository": {
