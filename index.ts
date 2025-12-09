@@ -83,7 +83,7 @@ class SplittedDateMixin {
     year?: string
     day?: string
     month?: ReturnType<typeof getMonth>
-    mix(date: string) {
+    mix(date?: string) {
         this.year = (date || "").substr(0, 4);
         this.day = (date || "").substr(8, 2);
         this.month = getMonth(date || "");
@@ -107,10 +107,28 @@ function hasNonEmptyItem(array: unknown, field: string | null = null) {
     );
 }
 
-/** Проверка наличия данных */
-function handleExistance(obj: { [key: string]: unknown }, ...nestedFieldsList: Array<[string, string] | string>) {
+type WithBoolFields<T, F extends readonly (ResumeKey | [ResumeKey, string])[]> = T & {
+    [K in F[number]as K extends ResumeKey
+    ? `${K}Bool`
+    : K extends [infer S, any]
+    ? S extends ResumeKey
+    ? `${S & string}Bool`
+    : never
+    : never
+    ]: boolean;
+};
+
+type ResumeKey = keyof ResumeSchema;
+
+function handleExistance<
+    T extends ResumeSchema,
+    F extends readonly (ResumeKey | [ResumeKey, string])[]
+>(
+    obj: T,
+    ...nestedFieldsList: F
+): asserts obj is WithBoolFields<T, F> {
     for (let nestedFields of nestedFieldsList) {
-        let initialKey: string, args: Parameters<typeof hasNonEmptyItem>;
+        let initialKey: typeof nestedFields, args: Parameters<typeof hasNonEmptyItem>;
         if (typeof nestedFields === 'string') {
             initialKey = nestedFields;
             args = [obj[nestedFields]];
@@ -118,7 +136,7 @@ function handleExistance(obj: { [key: string]: unknown }, ...nestedFieldsList: A
             initialKey = nestedFields[0];
             args = [obj[initialKey], nestedFields[1]];
         }
-        obj[initialKey + 'Bool'] = hasNonEmptyItem(...args);
+        (obj as any)[initialKey + 'Bool'] = hasNonEmptyItem(...args);
     }
 }
 
@@ -192,7 +210,7 @@ function handleEducation(e: Required<ResumeSchema>['education']['0']) {
     }
 }
 
-function handleGravatar(basics: ResumeSchema['basics']) {
+function mixGravatar(basics: ResumeSchema['basics']): asserts basics is (typeof basics) & { gravatar?: string } {
     if (!basics?.email) {
         return;
     }
@@ -204,14 +222,21 @@ function handleGravatar(basics: ResumeSchema['basics']) {
     });
 }
 
-function handleImage(obj: any) {
+interface WithPhoto {
+    photo?: string
+    photoBool?: boolean
+    photoType?: string
+}
+function handleImage(obj: ResumeSchema): asserts obj is ResumeSchema & WithPhoto {
     const { basics } = obj;
-    handleGravatar(basics);
+    mixGravatar(basics);
     const photo = basics?.image || basics?.gravatar;
     if (photo) {
-        obj.photo = photo;
-        obj.photoBool = true;
-        obj.photoType = getMimeType(photo);
+        Object.assign(obj, {
+            photo,
+            photoBool: true,
+            photoType: getMimeType(photo)
+        });
     }
 }
 
@@ -219,15 +244,15 @@ function importFile(name: string) {
     return fs.readFileSync(__dirname + "/" + name, "utf-8");
 }
 
-function render(resumeObject: any) {
+function render(resumeObject: ResumeSchema) {
     const { basics } = resumeObject;
 
-    if(basics?.name) basics.capitalName = _.upperCase(basics.name);
+    if (basics?.name) basics.capitalName = _.upperCase(basics.name);
 
     handleImage(resumeObject);
 
-    _.each(basics?.profiles, function (p: any) {
-        if (!p.iconClass) {
+    basics?.profiles?.forEach(function (p) {
+        if (!p.iconClass && p.network) {
             p.iconClass = getNetworkIconClass(p.network);
         }
     });
@@ -263,23 +288,27 @@ function render(resumeObject: any) {
 
     // Awards
     if (resumeObject.awardsBool) {
-        _.each(resumeObject.awards, (a: any) => SplittedDateMixin.prototype.mix.call(a, a.date));
+        resumeObject.awards?.forEach((a) => SplittedDateMixin.prototype.mix.call(a, a.date));
     }
 
     // Publications
     if (resumeObject.publicationsBool) {
-        _.each(resumeObject.publications, (a: any) => SplittedDateMixin.prototype.mix.call(a, a.releaseDate));
+        resumeObject.publications?.forEach((a) => SplittedDateMixin.prototype.mix.call(a, a.releaseDate));
     }
 
 
     // === CSS & шаблон ===
     {
-        resumeObject.bootstrap = importFile("bootstrap.min.css");
-        resumeObject.fontawesome = importFile("fontawesome.min.css");
-        resumeObject.normalize = importFile("normalize.css");
+        ([
+            ['bootstrap', "bootstrap.min.css"],
+            ['fontawesome', "fontawesome.min.css"],
+            ['normalize', "normalize.css"],
 
-        resumeObject.stylecss = importFile("style.css");
-        resumeObject.printcss = importFile("print.css");
+            ['stylecss', "style.css"],
+            ['printcss', "print.css"]
+        ] as const).forEach(([field, fileName]) => {
+            (resumeObject as any)[field] = importFile(fileName);
+        })
     }
 
     const theme = importFile("resume.template.html");
