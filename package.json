@@ -19,7 +19,8 @@
     "lodash": "^4.17.20",
     "mustache": "^2.2.1",
     "typescript": "^5.4.5",
-    "xmlhttprequest": "^1.8.0"
+    "xmlhttprequest": "^1.8.0",
+    "jsonresume-utils": "../jsonresume-utils"
   },
   "repository": {
     "type": "git",
