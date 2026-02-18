@@ -11,6 +11,7 @@
   "author": "Grigorii Bushmanov",
   "license": "MIT",
   "dependencies": {
+    "@greg-bush/jsonresume-utils": "^1.0.5",
     "@kurone-kito/jsonresume-types": "^0.4.0",
     "@types/node": "^24.10.2",
     "check-url-type": "^1.0.1",
@@ -19,8 +20,7 @@
     "lodash": "^4.17.20",
     "mustache": "^2.2.1",
     "typescript": "^5.4.5",
-    "xmlhttprequest": "^1.8.0",
-    "jsonresume-utils": "../jsonresume-utils"
+    "xmlhttprequest": "^1.8.0"
   },
   "repository": {
     "type": "git",

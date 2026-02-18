@@ -40,12 +40,5 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-    "paths": {
-      "jsonresume-utils/*": ["../jsonresume-utils/src/*"]
-    }
-  },
-  "include": [
-    "/**/*",
-    "../jsonresume-utils/src/**/*"
-  ]
+  }
 }
